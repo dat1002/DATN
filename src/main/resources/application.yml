@@ -1,0 +1,60 @@
+spring:
+  jackson:
+    time-zone: GMT+7
+  servlet:
+    multipart:
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+      enabled: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:sqlserver://localhost:1433;databaseName=testhq18
+#    url: jdbc:mysql://localhost:3306/testhq1?useSSL=false
+    username: sa
+#    username: root
+    password: 123
+#    password: 12345678
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+##    url: jdbc:mysql://localhost:3306/fruit?useSSL=false
+#    url: jdbc:sqlserver://localhost:1433;databaseName=testhq
+##    username: root
+#    username: sa
+##    password: 1234
+#    password: abc123!@#
+    tomcat:
+      connection-properties: useUnicode=true
+      characterEncoding: utf-8
+  data:
+    cassandra:
+      schema-action: create_if_not_exists
+  jpa:
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        globally_quoted_identifiers: true
+        enable_lazy_load_no_trans: true
+
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
+#        dialect: org.hibernate.dialect.MySQL8Dialect
+
+#        dialect: org.hibernate.dialect.SQLServer2012Dialect
+#        dialect: org.hibernate.dialect.SQLServer2012Dialect
+
+logging:
+  level:
+    org:
+      springframework:
+        web: TRACE
+email:
+  username: ngocsangair01@gmail.com
+  password: gawjkvhsdvktuhzv
