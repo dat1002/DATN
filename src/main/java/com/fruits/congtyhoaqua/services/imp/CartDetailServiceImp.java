@@ -14,10 +14,7 @@ import com.fruits.congtyhoaqua.utils.Convert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class CartDetailServiceImp implements ICartDetailService {
@@ -60,18 +57,18 @@ public class CartDetailServiceImp implements ICartDetailService {
     }
 
     @Override
-    public Set<CartDetail> getAllCartDetailByIdCart(Integer idCart) {
+    public List<CartDetail> getAllCartDetailByIdCart(Integer idCart) {
         Optional<Cart> cart = cartRepository.findById(idCart);
         if (cart.isEmpty()){
             throw new NotFoundException("No cart");
         }
-        Set<CartDetail> cartDetails = new HashSet<>(cartDetailRepository.findAllByCart(cart.get()));
+        List<CartDetail> cartDetails = new ArrayList<>(cartDetailRepository.findAllByCart(idCart));
         return cartDetails;
     }
 
     @Override
-    public Set<CartDetail> getAll() {
-        Set<CartDetail> cartDetails = new HashSet<>(cartDetailRepository.findAll());
+    public List<CartDetail> getAll() {
+        List<CartDetail> cartDetails = new ArrayList<>(cartDetailRepository.findAll());
         return cartDetails;
     }
 
@@ -87,12 +84,12 @@ public class CartDetailServiceImp implements ICartDetailService {
     }
 
     @Override
-    public Set<CartDetail> deleteByIdCart(Integer idCart) {
+    public List<CartDetail> deleteByIdCart(Integer idCart) {
         Optional<Cart> cart = cartRepository.findById(idCart);
         if (cart.isEmpty()){
             throw new NotFoundException("No cart");
         }
-        Set<CartDetail> cartDetails = new HashSet<>(cartDetailRepository.findAllByCart(cart.get()));
+        List<CartDetail> cartDetails = new ArrayList<>(cartDetailRepository.findAllByCart(idCart));
         for (CartDetail cartDetail: cartDetails) {
             if(cartDetail.getCartDetailId().getIdCart() != null){
                 cartDetailRepository.delete(cartDetail);

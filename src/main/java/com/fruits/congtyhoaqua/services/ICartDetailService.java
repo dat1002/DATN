@@ -5,13 +5,14 @@ import com.fruits.congtyhoaqua.dtos.CartDetailDTO;
 import com.fruits.congtyhoaqua.models.BillDetail;
 import com.fruits.congtyhoaqua.models.CartDetail;
 
+import java.util.List;
 import java.util.Set;
 
 public interface ICartDetailService {
     CartDetail createCartDetail(Integer idCart,CartDetailDTO cartDetailDTO);
-    Set<CartDetail> getAllCartDetailByIdCart(Integer idCart);
+    List<CartDetail> getAllCartDetailByIdCart(Integer idCart);
     CartDetail deleteByIdCartDetail(Integer idCart, Integer idFruit);
-    Set<CartDetail> deleteByIdCart(Integer idCart);
-    Set<CartDetail> getAll();
+    List<CartDetail> deleteByIdCart(Integer idCart);
+    List<CartDetail> getAll();
 
 }

@@ -19,10 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+
 @Service
 public class UserServiceImp implements IUserService {
     @Autowired private UserRepository userRepository;
@@ -68,25 +66,48 @@ public class UserServiceImp implements IUserService {
         if(user.isEmpty()){
             throw new NotFoundException("No user");
         }
-        System.out.println("Hello WWorld liên tục lần 1");
-        List<Role> roles = roleRepository.findAll();
-        for (Role role: roles) {
-            Set<User> userss = role.getUsers();
-            System.out.println(userss.size());
-            userss.remove(user.get());
-            System.out.println(userss.size());
-            role.setUsers(userss);
-        }
-        System.out.println("Hello WWorld liên tục lần 2");
-        roleRepository.saveAll(roles);
-        System.out.println("Hello WWorld liên tục lần 5");
-        userRepository.delete(user.get());
+//        System.out.println("Hello WWorld liên tục lần 1");
+//        List<Role> roles = roleRepository.findAll();
+//        for (Role role: roles) {
+//            Set<User> userss = role.getUsers();
+//            System.out.println(userss.size());
+//            userss.remove(user.get());
+//            System.out.println(userss.size());
+//            role.setUsers(userss);
+//        }
+//        System.out.println("Hello WWorld liên tục lần 2");
+//        roleRepository.saveAll(roles);
+//        System.out.println("Hello WWorld liên tục lần 5");
+        user.get().setStatus(false);
+        userRepository.save(user.get());
         return user.get();
     }
 
     @Override
-    public Set<User> findAllByName(String name) {
-        Set<User> users = userRepository.findAllByNameContaining(name);
+    public User restoreUser(Integer idUser) {
+        Optional<User> user = userRepository.findById(idUser);
+        if(user.isEmpty()){
+            throw new NotFoundException("No user");
+        }
+//        List<Role> roles = roleRepository.findAll();
+//        for (Role role: roles) {
+//            Set<User> userss = role.getUsers();
+//            System.out.println(userss.size());
+//            userss.remove(user.get());
+//            System.out.println(userss.size());
+//            role.setUsers(userss);
+//        }
+//        roleRepository.saveAll(roles);
+        user.get().setStatus(true);
+        userRepository.save(user.get());
+        return user.get();
+    }
+
+
+
+    @Override
+    public List<User> findAllByName(String name) {
+        List<User> users = userRepository.findAllByNameContaining(name);
         if(users.isEmpty()){
             throw new NotFoundException("No user");
         }
@@ -122,9 +143,40 @@ public class UserServiceImp implements IUserService {
         return userRepository.save(user.get());
     }
 
+//    @Override
+//    public List<User> getAllUser() {
+//        List<User> users = new ArrayList<>(userRepository.getAllUser());
+//        if (users.isEmpty()){
+//            throw new NotFoundException("No user.");
+//        }
+//        return users;
+//    }
+
+
+//    tất cả các tài khoản người dùng (khách hàng)
     @Override
-    public Set<User> getAllUser() {
-        Set<User> users = new HashSet<>(userRepository.findAll());
+    public List<User> selectAllUser(Integer start, Integer size) {
+        List<User> users = new ArrayList<>(userRepository.selectAllUser(start,size));
+        if (users.isEmpty()){
+            throw new NotFoundException("No user.");
+        }
+        return users;
+    }
+
+    //    tất cả các tài khoản người dùng (khách hàng) đã xóa
+    @Override
+    public List<User> selectAllUserDelete() {
+        List<User> users = new ArrayList<>(userRepository.selectAllUserDelete());
+        if (users.isEmpty()){
+            throw new NotFoundException("No user.");
+        }
+        return users;
+    }
+
+    //    tất cả các tài khoản người dùng (admin)
+    @Override
+    public List<User> selectAllAdmin() {
+        List<User> users = new ArrayList<>(userRepository.selectAllAdmin());
         if (users.isEmpty()){
             throw new NotFoundException("No user.");
         }

@@ -13,7 +13,7 @@ spring:
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:sqlserver://localhost:1433;databaseName=testhq18
+    url: jdbc:sqlserver://localhost:1433;databaseName=testhq20
 #    url: jdbc:mysql://localhost:3306/testhq1?useSSL=false
     username: sa
 #    username: root

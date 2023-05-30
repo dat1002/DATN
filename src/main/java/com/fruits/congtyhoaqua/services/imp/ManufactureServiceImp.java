@@ -9,9 +9,7 @@ import com.fruits.congtyhoaqua.utils.Convert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ManufactureServiceImp implements IManufactureService {
@@ -40,13 +38,14 @@ public class ManufactureServiceImp implements IManufactureService {
         if(manufacture.isEmpty()){
             throw new NotFoundException("No Manufacture");
         }
-        manufactureRepository.delete(manufacture.get());
+        manufacture.get().setStatus(false);
+        manufactureRepository.save(manufacture.get());
         return manufacture.get();
     }
 
     @Override
-    public Set<Manufacture> getAllManufacture() {
-        Set<Manufacture> manufactures= new HashSet<>(manufactureRepository.findAll());
+    public List<Manufacture> getAllManufacture(Integer start, Integer size) {
+        List<Manufacture> manufactures= new ArrayList<>(manufactureRepository.selectAll(start,size));
         if(manufactures.isEmpty()){
             throw new NotFoundException("No Manufacture");
         }
@@ -63,8 +62,8 @@ public class ManufactureServiceImp implements IManufactureService {
     }
 
     @Override
-    public Set<Manufacture> getManufactureByName(String name) {
-        Set<Manufacture> manufactures= new HashSet<>(manufactureRepository.findAllByNameContaining(name));
+    public List<Manufacture> getManufactureByName(String name) {
+        List<Manufacture> manufactures= new ArrayList<>(manufactureRepository.findAllByNameContaining(name));
         if(manufactures.isEmpty()){
             throw new NotFoundException("No Manufacture");
         }

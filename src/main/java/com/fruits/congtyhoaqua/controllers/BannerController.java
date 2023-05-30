@@ -6,6 +6,7 @@ import com.fruits.congtyhoaqua.models.Banner;
 import com.fruits.congtyhoaqua.services.IBannerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,11 +19,10 @@ public class BannerController extends BaseController<Banner> {
 
     @GetMapping
     public ResponseEntity<?> getAllBanner() {
-        return this.resSetSuccess(bannerService.getAllBanner());
+        return this.resListSuccess(bannerService.getAllBanner());
     }
 
-    @PatchMapping("/{idBanner}/image")
-//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PatchMapping("/image/{idBanner}")
     public ResponseEntity<?> editImageBanner(@PathVariable(name = "idBanner")Integer idBanner,
                                              @RequestParam MultipartFile image){
         return this.resSuccess(bannerService.editImageBanner(idBanner, image));

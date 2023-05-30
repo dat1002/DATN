@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class CategoryServiceImp implements ICategoryService {
@@ -51,19 +49,32 @@ public class CategoryServiceImp implements ICategoryService {
         if (category.isEmpty()){
             throw new NotFoundException("No Category");
         }
-        categoryRepository.delete(category.get());
+        category.get().setStatus(false);
+        categoryRepository.save(category.get());
         return category.get();
     }
 
     @Override
-    public Set<Category> getAllCategory() {
-        Set<Category> categories = new HashSet<>(categoryRepository.findAll());
+    public Category restoreCategory(Integer idCategory) {
+        Optional<Category> category = categoryRepository.findById(idCategory);
+        if (category.isEmpty()){
+            throw new NotFoundException("No Category");
+        }
+        category.get().setStatus(true);
+        categoryRepository.save(category.get());
+        return category.get();
+    }
+
+    @Override
+    public List<Category> getAllCategory() {
+        List<Category> categories = new ArrayList<>(categoryRepository.findAll());
         if(categories.isEmpty()){
             throw new NotFoundException("No Category");
         }
         return categories;
     }
 
+    @Override
     public Category editAvatarCategory(Integer idCategory, MultipartFile avatar) {
         Optional<Category> category = categoryRepository.findById(idCategory);
         if (category.isEmpty()){

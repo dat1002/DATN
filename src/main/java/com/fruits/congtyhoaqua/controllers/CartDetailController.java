@@ -27,7 +27,7 @@ public class CartDetailController extends BaseController<CartDetail> {
 
     @DeleteMapping("delete/{idCart}")
     public ResponseEntity<?> deleteByIdCart(@PathVariable(name = "idCart") Integer idCart){
-        return this.resSetSuccess(iCartDetailService.deleteByIdCart(idCart));
+        return this.resListSuccess(iCartDetailService.deleteByIdCart(idCart));
     }
 
     @DeleteMapping("deleteByIdCart/{idCart}/{idFruit}")
@@ -38,11 +38,11 @@ public class CartDetailController extends BaseController<CartDetail> {
 
     @GetMapping("getByIdCart/{idCart}")
     public ResponseEntity<?> getAllCartDetailByIdCart(@PathVariable(name = "idCart") Integer idCart){
-        return this.resSetSuccess(iCartDetailService.getAllCartDetailByIdCart(idCart));
+        return this.resListSuccess(iCartDetailService.getAllCartDetailByIdCart(idCart));
     }
 
     @GetMapping("getAll")
     public ResponseEntity<?> getAll(){
-        return this.resSetSuccess(iCartDetailService.getAll());
+        return this.resListSuccess(iCartDetailService.getAll());
     }
 }

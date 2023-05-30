@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface IFruitService {
-    List<Fruit> getAllFruits();
+    List<Fruit> getAllFruits(Integer start, Integer size);
+    List<Fruit> selectAllFruitDeleted();
     List<Fruit> selectTopSale();
     List<Fruit> selectTopNew();
     List<Fruit> selectTopSaleVip();
@@ -16,6 +17,7 @@ public interface IFruitService {
     Fruit editAvatarFruit(Integer idFruit, MultipartFile avatar);
     Fruit editFruit(Integer idFruit,FruitDTO fruitDTO);
     Fruit deleteFruit(Integer idFruit);
+    Fruit restoreFruit(Integer idFruit);
     Fruit getById(Integer idFruit);
     List<Fruit> getAllByDay(String afterDate, String beforeDate);
     List<Fruit> getAllByPrice(Integer greaterPrice, Integer lessPrice);
@@ -23,6 +25,7 @@ public interface IFruitService {
     List<Fruit> getAllByName(String name);
     List<Fruit> getAllByExpiry(String expiry);
     List<Fruit> getAllFruitByCategory(Integer idCategory);
+    List<Fruit> top5();
     List<Fruit> filter(
             String idCategory,
             String dayBefore,

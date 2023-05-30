@@ -67,12 +67,28 @@ public class Convert {
         }
         return billDetail;
     }
+
+
     public static CartDetail fromCartDetailDTOToCartDetail(CartDetailDTO cartDetailDTO, CartDetail cartDetail) {
 
         if (cartDetailDTO.getAmount()!= null){
             cartDetail.setAmount(cartDetailDTO.getAmount());
         }
         return cartDetail;
+    }
+
+    public static Knowledge fromKnowledgeDTOToKnowledge(KnowledgeDTO knowledgeDTO, Knowledge knowledge) {
+
+        if (knowledgeDTO.getTitle()!=null){
+            knowledge.setTitle(knowledgeDTO.getTitle());
+        }
+        if (knowledgeDTO.getCreated_by()!=null){
+            knowledge.setCreated_by(knowledgeDTO.getCreated_by());
+        }
+        if (knowledgeDTO.getDescription()!=null){
+            knowledge.setDescription(knowledgeDTO.getDescription());
+        }
+        return knowledge;
     }
 
 

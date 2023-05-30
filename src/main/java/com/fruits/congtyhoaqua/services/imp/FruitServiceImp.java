@@ -46,8 +46,18 @@ public class FruitServiceImp implements IFruitService {
 
 
     @Override
-    public List<Fruit> getAllFruits() {
-        List<Fruit> fruits = new ArrayList<>(fruitRepository.selectAllFruit());
+    public List<Fruit> getAllFruits(Integer start, Integer size) {
+        List<Fruit> fruits = new ArrayList<>(fruitRepository.selectAllFruit(start,size));
+        if (fruits.isEmpty()){
+            throw new NotFoundException("No fruit");
+        }
+        return fruits;
+    }
+
+    // tất cả sản phẩm đã xóa
+    @Override
+    public List<Fruit> selectAllFruitDeleted() {
+        List<Fruit> fruits = new ArrayList<>(fruitRepository.selectAllFruitDeleted());
         if (fruits.isEmpty()){
             throw new NotFoundException("No fruit");
         }
@@ -125,7 +135,21 @@ public class FruitServiceImp implements IFruitService {
         if (fruit.isEmpty()){
             throw new NotFoundException("No fruit");
         }
-        fruitRepository.delete(fruit.get());
+
+        fruit.get().setStatus(false);
+        fruitRepository.save(fruit.get());
+        return fruit.get();
+    }
+
+    @Override
+    public Fruit restoreFruit(Integer idFruit) {
+        Optional<Fruit> fruit = fruitRepository.findById(idFruit);
+        if (fruit.isEmpty()){
+            throw new NotFoundException("No fruit");
+        }
+
+        fruit.get().setStatus(true);
+        fruitRepository.save(fruit.get());
         return fruit.get();
     }
 
@@ -194,6 +218,12 @@ public class FruitServiceImp implements IFruitService {
                 fruitCategories) {
             fruits.add(fruitCategory.getFruit());
         }
+        return fruits;
+    }
+
+    @Override
+    public List<Fruit> top5() {
+        List<Fruit> fruits = new ArrayList<>(fruitRepository.top5());
         return fruits;
     }
 

@@ -13,6 +13,8 @@ import com.fruits.congtyhoaqua.utils.Convert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -41,7 +43,15 @@ public class BillDetailServiceImp implements IBillDetailService {
     }
 
     @Override
-    public Set<BillDetail> getAllBillDetailByIdBill(Integer idBill) {
-        return null;
+    public List<BillDetail> findAllByIdBill(Integer idBill) {
+        Optional<Bill> bill = billRepository.findById(idBill);
+        if (bill.isEmpty()){
+            throw new NotFoundException("No bill");
+        }
+        List<BillDetail> billDetails = new ArrayList<>(billDetailRepository.findAllByIdBill(idBill));
+        if (billDetails.isEmpty()){
+            throw new NotFoundException("No bill details");
+        }
+        return billDetails;
     }
 }

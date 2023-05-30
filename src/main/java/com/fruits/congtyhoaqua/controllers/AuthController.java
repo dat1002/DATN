@@ -29,15 +29,22 @@ public class AuthController extends BaseController<AuthenticationResponse> {
         return this.resSuccess(authService.login(authenticationRequest));
     }
 
-    @PostMapping("/signup-user")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/signup-admin")
+//    @PreAuthorize("hasRole('ADMIN')")
 
     public ResponseEntity<?> signupAdmin(@Valid @RequestBody UserDTO userDTO){
         return this.resSuccess(authService.signupAdmin(userDTO));
     }
 
+    @PostMapping("/signup-user")
+//    @PreAuthorize("hasRole('ADMIN')")
+
+    public ResponseEntity<?> signUpUser(@Valid @RequestBody UserDTO userDTO) {
+        return this.resSuccess(authService.signupUser(userDTO));
+    }
+
     @PostMapping("/signup-user2")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> signUpUser2(@Valid @RequestBody UserDTO userDTO){
         return this.resSuccess(authService.signupUser2(userDTO));
     }

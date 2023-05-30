@@ -2,10 +2,13 @@ package com.fruits.congtyhoaqua.services.imp;
 
 import com.fruits.congtyhoaqua.dtos.UserDTO;
 import com.fruits.congtyhoaqua.exceptions.BadRequestException;
+import com.fruits.congtyhoaqua.exceptions.NotFoundException;
 import com.fruits.congtyhoaqua.filters.AuthenticationResponse;
+import com.fruits.congtyhoaqua.models.Cart;
 import com.fruits.congtyhoaqua.models.Role;
 import com.fruits.congtyhoaqua.models.User;
 import com.fruits.congtyhoaqua.payload.AuthenticationRequest;
+import com.fruits.congtyhoaqua.repositories.CartRepository;
 import com.fruits.congtyhoaqua.repositories.RoleRepository;
 import com.fruits.congtyhoaqua.repositories.UserRepository;
 import com.fruits.congtyhoaqua.services.IAuthService;
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,6 +50,11 @@ public class AuthServiceImp implements IAuthService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
+    @Autowired
+    private CartServiceImp cartServiceImp;
 
     @Override
     public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
@@ -83,7 +92,11 @@ public class AuthServiceImp implements IAuthService {
         users.add(user);
         role.setUsers(users);
         roleRepository.save(role);
-
+        Optional<Cart> cart = cartRepository.findByUser(user);
+        if (!cart.isEmpty()){
+            throw new NotFoundException("Cart is already exists");
+        }
+        cartServiceImp.createCart(user.getId());
         final UserDetails userDetails = myUserDetailService.loadUserByUsername(newUser.getAccount());
         final String jwt = jwtUtil.generateToken(userDetails);
         return new AuthenticationResponse(jwt, newUser.getId(), newUser.getAccount(), List.of(role.getName()));

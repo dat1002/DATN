@@ -10,6 +10,7 @@ import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,6 +27,14 @@ public class Bill extends BaseEntity {
     @Column(name = "dateCreated")
     private LocalDate dateCreated;
 
+    @Column(name = "payment_method")
+    @Nationalized
+    private String paymentMethod;
+
+    @Column(name = "payment_status")
+    @Nationalized
+    private String paymentStatus;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_user")
     private User user;
@@ -33,4 +42,7 @@ public class Bill extends BaseEntity {
     @OneToMany(mappedBy = "bill",cascade = CascadeType.ALL)
     private Set<BillDetail> billDetails;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id_order_status")
+    private OrderStatus orderStatus;
 }

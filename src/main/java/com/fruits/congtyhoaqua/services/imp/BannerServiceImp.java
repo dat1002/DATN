@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class BannerServiceImp implements IBannerService {
@@ -26,8 +24,8 @@ public class BannerServiceImp implements IBannerService {
 
 
     @Override
-    public Set<Banner> getAllBanner(){
-        Set<Banner> banners = new HashSet<>(bannerRepository.findAll());
+    public List<Banner> getAllBanner(){
+        List<Banner> banners = new ArrayList<>(bannerRepository.selectAll());
         if(banners.isEmpty()){
             throw new NotFoundException("No banner");
         }

@@ -35,10 +35,11 @@ public class ManufactureController extends BaseController<Manufacture> {
         return this.resSuccess(manufactureService.deleteManufacture(idManufacture));
     }
 
-    @GetMapping("/get-all-manufacture")
+    @GetMapping("/get-all-manufacture/{start}/{size}")
 //    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public ResponseEntity<?> getAllManufacture(){
-        return  this.resSetSuccess(manufactureService.getAllManufacture());
+    public ResponseEntity<?> getAllManufacture(@PathVariable(name = "start")Integer start,
+                                               @PathVariable(name = "size")Integer size){
+        return  this.resListSuccess(manufactureService.getAllManufacture(start,size));
     }
 
     @GetMapping("/{idManufacture}")
@@ -50,6 +51,6 @@ public class ManufactureController extends BaseController<Manufacture> {
     @GetMapping("/find-by-name-manufacture")
 //    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<?> getManufactureByName(@RequestParam String name){
-        return this.resSetSuccess(manufactureService.getManufactureByName(name));
+        return this.resListSuccess(manufactureService.getManufactureByName(name));
     }
 }

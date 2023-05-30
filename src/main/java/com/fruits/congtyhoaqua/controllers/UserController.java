@@ -41,7 +41,7 @@ public class UserController  extends BaseController<User> {
     @GetMapping("/get-all-by-name")
 //    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<?> findAllByName(@RequestParam String name){
-        return  this.resSetSuccess(userService.findAllByName(name));
+        return  this.resListSuccess(userService.findAllByName(name));
     }
 
     @GetMapping("/get-by-id/{idUser}")
@@ -62,10 +62,25 @@ public class UserController  extends BaseController<User> {
         return  this.resSuccess(userService.editAvatar(idUser, avatar));
     }
 
-    @GetMapping("/get-all-user")
+
+    // tất cả tài khoản của khách hàng
+    @GetMapping("/get-all-user/{start}/{size}")
 //    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getAllUser(){
-        return this.resSetSuccess(userService.getAllUser());
+    public ResponseEntity<?> getAllUser(@PathVariable(name = "start")Integer start,
+                                        @PathVariable(name = "size")Integer size){
+        return this.resListSuccess(userService.selectAllUser(start,size));
     }
 
+    // tất cả tài khoản của khách hàng đã xóa
+    @GetMapping("/get-all-user-delete")
+//    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllUserDelete(){
+        return this.resListSuccess(userService.selectAllUserDelete());
+    }
+
+    @GetMapping("/get-all-admin")
+//    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllAdmin(){
+        return this.resListSuccess(userService.selectAllAdmin());
+    }
 }

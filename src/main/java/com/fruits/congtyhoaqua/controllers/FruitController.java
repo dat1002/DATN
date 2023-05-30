@@ -21,10 +21,17 @@ public class FruitController extends BaseController<Fruit> {
     @Autowired
     private IFruitService fruitService;
 
-    @GetMapping
+    @GetMapping("//{start}/{size}")
 //    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public ResponseEntity<?> getAllFruit(){
-        return this.resListSuccess(fruitService.getAllFruits());
+    public ResponseEntity<?> getAllFruit(@PathVariable(name = "start")Integer start,
+                                         @PathVariable(name = "size")Integer size){
+        return this.resListSuccess(fruitService.getAllFruits(start, size));
+    }
+
+    @GetMapping("/deleted")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public ResponseEntity<?> selectAllFruitDeleted(){
+        return this.resListSuccess(fruitService.selectAllFruitDeleted());
     }
 
     @GetMapping("/top4sale")
@@ -96,6 +103,12 @@ public class FruitController extends BaseController<Fruit> {
     public ResponseEntity<?> getAllByDate(@RequestParam String afterDate,
                                           @RequestParam String beforeDate){
         return this.resListSuccess(fruitService.getAllByDay(afterDate, beforeDate));
+    }
+
+    @GetMapping("/top5")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public ResponseEntity<?> getTop5(){
+        return this.resListSuccess(fruitService.top5());
     }
 
     @PatchMapping("/{idFruit}/avatar")

@@ -41,18 +41,18 @@ public class StatisticalServiceImp implements IStatisticalService {
     @Override
     public List<Double> RevenueForTheYear() {
         List<Double> doubles = new ArrayList<>();
-        Double jan = RevenueForTheMonth("2022-01-01", "2022-01-31");
-        Double feb = RevenueForTheMonth("2022-02-01", "2022-02-28");
-        Double mar = RevenueForTheMonth("2022-03-01", "2022-03-31");
-        Double apr = RevenueForTheMonth("2022-04-01", "2022-04-30");
-        Double may = RevenueForTheMonth("2022-05-01", "2022-05-31");
-        Double jun = RevenueForTheMonth("2022-06-01", "2022-06-30");
-        Double jul = RevenueForTheMonth("2022-07-01", "2022-07-31");
-        Double aug = RevenueForTheMonth("2022-08-01", "2022-08-31");
-        Double sep = RevenueForTheMonth("2022-09-01", "2022-09-30");
-        Double oct = RevenueForTheMonth("2022-10-01", "2022-10-31");
-        Double nov = RevenueForTheMonth("2022-11-01", "2022-11-30");
-        Double dec = RevenueForTheMonth("2022-12-01", "2022-12-31");
+        Double jan = RevenueForTheMonth("2023-01-01", "2023-01-31");
+        Double feb = RevenueForTheMonth("2023-02-01", "2023-02-28");
+        Double mar = RevenueForTheMonth("2023-03-01", "2023-03-31");
+        Double apr = RevenueForTheMonth("2023-04-01", "2023-04-30");
+        Double may = RevenueForTheMonth("2023-05-01", "2023-05-31");
+        Double jun = RevenueForTheMonth("2023-06-01", "2023-06-30");
+        Double jul = RevenueForTheMonth("2023-07-01", "2023-07-31");
+        Double aug = RevenueForTheMonth("2023-08-01", "2023-08-31");
+        Double sep = RevenueForTheMonth("2023-09-01", "2023-09-30");
+        Double oct = RevenueForTheMonth("2023-10-01", "2023-10-31");
+        Double nov = RevenueForTheMonth("2023-11-01", "2023-11-30");
+        Double dec = RevenueForTheMonth("2023-12-01", "2023-12-31");
         doubles.add(jan);
         doubles.add(feb);
         doubles.add(mar);

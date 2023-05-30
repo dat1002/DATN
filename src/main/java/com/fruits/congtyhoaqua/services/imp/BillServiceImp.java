@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class BillServiceImp implements IBillService {
@@ -26,6 +24,10 @@ public class BillServiceImp implements IBillService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private FruitRepository fruitRepository;
+
+
 //    @Autowired
 //    private CustomerRepository customerRepository;
 
@@ -33,11 +35,11 @@ public class BillServiceImp implements IBillService {
     private BillDetailRepository billDetailRepository;
 
     @Autowired
-    private FruitRepository fruitRepository;
+    private OrderStatusRepository orderStatusRepository;
 
     @Override
     @Transactional
-    public Bill createBill(Integer idUser, Integer idCustomer, Set<BillDetailDTO> billDetailDTOS) {
+    public Bill createBill(Integer idUser, Set<BillDetailDTO> billDetailDTOS) {
         // tạo bill
         Optional<User> user = userRepository.findById(idUser);
         if (user.isEmpty()) {
@@ -48,6 +50,10 @@ public class BillServiceImp implements IBillService {
         bill.setUser(user.get());
         String randomCode = RandomStringUtils.randomAlphabetic(10);
         bill.setCode(randomCode);
+        bill.setPaymentMethod("Thanh toán khi nhận hàng.");
+        bill.setPaymentStatus("Chưa thanh toán.");
+        Optional<OrderStatus> orderStatus  = orderStatusRepository.findById(1);
+        bill.setOrderStatus(orderStatus.get());
         bill.setDateCreated(LocalDate.now());
         Bill bill1 = billRepository.save(bill);
         //tạo billDetail
@@ -76,12 +82,12 @@ public class BillServiceImp implements IBillService {
     }
 
     @Override
-    public Set<Bill> getAllBillByIdUser(Integer idUser) {
+    public List<Bill> getAllBillByIdUser(Integer idUser,Integer start, Integer size) {
         Optional<User> user = userRepository.findById(idUser);
         if (user.isEmpty()) {
             throw new NotFoundException("No User");
         }
-        Set<Bill> bills = billRepository.findAllByUser(user.get());
+        List<Bill> bills = billRepository.findAllByUser(idUser,start,size);
         if (bills.isEmpty()) {
             throw new NotFoundException("No bill");
         }
@@ -98,10 +104,10 @@ public class BillServiceImp implements IBillService {
     }
 
     @Override
-    public Set<Bill> filterByTime(String start, String end) {
+    public List<Bill> filterByTime(String start, String end) {
         LocalDate startDateConvert = LocalDate.parse(start);
         LocalDate endDateConvert = LocalDate.parse(end);
-        Set<Bill> bills = new HashSet<>(billRepository.findAllByDateCreatedBetween(startDateConvert, endDateConvert));
+        List<Bill> bills = new ArrayList<>(billRepository.findAllByDateCreatedBetween(startDateConvert, endDateConvert));
         if (bills.isEmpty()) {
             throw new NotFoundException("No bill");
         }
@@ -127,12 +133,102 @@ public class BillServiceImp implements IBillService {
         return priceBill;
     }
 
+
+
     @Override
-    public Set<Bill> getAllBill() {
-        Set<Bill> bills = new HashSet<>(billRepository.findAll());
+    public List<Bill> selectAllBill(Integer start, Integer size) {
+        List<Bill> bills = new ArrayList<>(billRepository.selectAllBill(start,size));
         if (bills.isEmpty()) {
             throw new NotFoundException("No bill");
         }
         return bills;
+    }
+
+    @Override
+    public List<Bill> selectAllBillCancelled() {
+        List<Bill> bills = new ArrayList<>(billRepository.selectAllBillCancelled());
+        if (bills.isEmpty()) {
+            throw new NotFoundException("No bill");
+        }
+        return bills;
+    }
+
+    @Override
+    public Double dayRevenue() {
+        Double rev = billRepository.dayRevenue();
+        return rev;
+    }
+
+    @Override
+    public Double weeklyRevenue() {
+        Double rev = billRepository.weeklyRevenue();
+        return rev;
+    }
+
+    @Override
+    public Double monthlyRevenue() {
+        Double rev = billRepository.monthlyRevenue();
+        return rev;
+    }
+
+    @Override
+    public Double annualRevenue() {
+        Double rev = billRepository.annualRevenue();
+        return rev;
+    }
+
+    @Override
+    public Double dayProfit() {
+        Double rev = billRepository.dayProfit();
+        return rev;
+    }
+
+    @Override
+    public Double weeklyProfit() {
+        Double rev = billRepository.weeklyProfit();
+        return rev;
+    }
+
+    @Override
+    public Double monthlyProfit() {
+        Double rev = billRepository.monthlyProfit();
+        return rev;
+    }
+
+    @Override
+    public Double annualProfit() {
+        Double rev = billRepository.annualProfit();
+        return rev;
+    }
+
+//    @Override
+//    public List<Float> annual() {
+//        List<Float> revs = new ArrayList<>(billRepository.annual());
+//
+//        return revs;
+//    }
+
+
+    @Override
+    public Bill editStatusBill(Integer idBill, Integer idOrderStatus) {
+        Optional<Bill> bill = billRepository.findById(idBill);
+        if (bill.isEmpty()) {
+            throw new NotFoundException("No bill");
+        }
+
+        if (idOrderStatus == 4) {
+            bill.get().setStatus(Boolean.FALSE);
+            List<BillDetail> billDetails = new ArrayList<>(billDetailRepository.findAllByIdBill(idBill));
+            for (BillDetail billDetail: billDetails
+                 ) {
+               Optional<Fruit> fruit =  fruitRepository.findById(billDetail.getFruit().getId());
+               fruit.get().setAmount(fruit.get().getAmount()+billDetail.getAmount());
+               fruitRepository.save(fruit.get());
+            }
+        }
+        Optional<OrderStatus> orderStatus  = orderStatusRepository.findById(idOrderStatus);
+        bill.get().setOrderStatus(orderStatus.get());
+        billRepository.save(bill.get());
+        return bill.get();
     }
 }

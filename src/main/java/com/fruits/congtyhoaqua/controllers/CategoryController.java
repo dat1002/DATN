@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/categories")
@@ -37,6 +38,12 @@ public class CategoryController extends BaseController<Category> {
     @GetMapping("/get-all-category")
 //    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<?> getAllCategory(){
-        return  this.resSetSuccess(categoryService.getAllCategory());
+        return  this.resListSuccess(categoryService.getAllCategory());
+    }
+
+    @PatchMapping("/edit/{idCategory}")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public ResponseEntity<?> editAvatarCategory(@PathVariable Integer idCategory, @RequestParam MultipartFile avatar){
+        return  this.resSuccess(categoryService.editAvatarCategory(idCategory, avatar));
     }
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 
@@ -26,11 +27,10 @@ public class CartDetail {
     @JsonIgnore
     private Cart cart;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @MapsId("idFruit")
     @JoinColumn(name = "id_fruit")
-    @JsonIgnore
-
+    @Nationalized
     private Fruit fruit;
 
     private Integer amount;
